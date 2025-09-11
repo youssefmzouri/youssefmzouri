@@ -1,0 +1,32 @@
+---
+// Social component that accepts platform and username as props
+export interface Props {
+  platform: string;
+  username: string;
+}
+
+const { platform, username } = Astro.props;
+
+const platformUrls: Record<string, string> = {
+  github: "https://www.github.com",
+  x: "https://x.com",
+  linkedin: "https://www.linkedin.com/in"
+};
+
+// Get the appropriate URL for the platform
+const baseUrl = platformUrls[platform.toLowerCase()] || `https://www.${platform.toLowerCase()}.com`;
+const profileUrl = `${baseUrl}/${username}`;
+---
+
+<a href={profileUrl} target="_blank" class="social-link">
+  {platform}
+</a>
+
+<style>
+  a {
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: #4c1d95;
+    text-decoration: none;
+  }
+</style>
