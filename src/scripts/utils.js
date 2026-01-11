@@ -3,6 +3,6 @@ export async function getAllposts() {
 }
 
 export function getUniqueTags(posts) {
-  const tags = posts.map((post) => post.frontmatter.tags).flat();
+  const tags = posts.map((post) => post.data.tags).flat();
   return [...new Set(tags)];
 }

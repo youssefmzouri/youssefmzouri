@@ -1,5 +1,4 @@
 ---
-layout: ./../../layouts/MarkdownPostLayout.astro
 title: Mi tercera publicación en el blog
 pubDate: 2025-09-11
 author: 'Youssef El Mzouri'
