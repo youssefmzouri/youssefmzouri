@@ -1,5 +1,7 @@
+import { getCollection } from "astro:content";
+
 export async function getAllposts() {
-  return Object.values(await import.meta.glob('../pages/posts/*.md', { eager: true }));
+  return await getCollection("blog");
 }
 
 export function getUniqueTags(posts) {
