@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import TimelineItem from './TimelineItem.astro';
+
+const workEntries = await getCollection('work');
+
+const sortedWork = workEntries.sort((a, b) => {
+  return b.data.startDate.getTime() - a.data.startDate.getTime();
+});
+---
+
+<section class="timeline-section">
+  <h2>Experience</h2>
+  <div class="timeline">
+    {sortedWork.map(async (entry) => {
+      const { Content } = await entry.render();
+      const htmlContent = await entry.render().then(r => r.Content);
+      return (
+        <TimelineItem
+          position={entry.data.position}
+          company={entry.data.company}
+          companyUrl={entry.data.companyUrl}
+          startDate={entry.data.startDate}
+          endDate={entry.data.endDate}
+          description={entry.body || ''}
+        />
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .timeline-section {
+    margin-bottom: 48px;
+  }
+
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .timeline {
+    position: relative;
+  }
+</style>
