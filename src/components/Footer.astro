@@ -1,17 +1,20 @@
 ---
-import Social from './Social.astro';
+const currentYear = new Date().getFullYear();
 ---
 
 <footer>
-  <Social platform="github" />
-  <Social platform="x" />
-  <Social platform="linkedin" />
+  <p>Youssef Mzouri · {currentYear}</p>
 </footer>
 
 <style>
   footer {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
+    padding: 24px 1rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--text-secondary);
   }
 </style>
