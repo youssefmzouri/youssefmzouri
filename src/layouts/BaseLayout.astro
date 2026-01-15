@@ -10,7 +10,7 @@ export interface Props {
 const { pageTitle } = Astro.props;
 ---
 
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,8 +24,17 @@ const { pageTitle } = Astro.props;
       <slot />
     </main>
     <Footer />
-    <script>
-      import '../scripts/menu.js';
-    </script>
   </body>
 </html>
+
+<style>
+  main {
+    padding-top: 80px;
+  }
+
+  @media (max-width: 640px) {
+    main {
+      padding-top: 70px;
+    }
+  }
+</style>
