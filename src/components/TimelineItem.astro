@@ -5,10 +5,9 @@ export interface Props {
   companyUrl: string;
   startDate: Date;
   endDate: Date | null;
-  description: string;
 }
 
-const { position, company, companyUrl, startDate, endDate, description } = Astro.props;
+const { position, company, companyUrl, startDate, endDate } = Astro.props;
 
 const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
@@ -32,7 +31,9 @@ const dateRange = endDate
         <line x1="10" y1="14" x2="21" y2="3"></line>
       </svg>
     </a>
-    <div class="description" set:html={description} />
+    <div class="description">
+      <slot />
+    </div>
   </div>
 </div>
 

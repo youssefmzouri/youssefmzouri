@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import TimelineItem from './TimelineItem.astro';
 
 const workEntries = await getCollection('work');
@@ -7,25 +7,29 @@ const workEntries = await getCollection('work');
 const sortedWork = workEntries.sort((a, b) => {
   return b.data.startDate.getTime() - a.data.startDate.getTime();
 });
+
+const workWithContent = await Promise.all(
+  sortedWork.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { entry, Content };
+  })
+);
 ---
 
 <section class="timeline-section">
   <h2>Experience</h2>
   <div class="timeline">
-    {sortedWork.map(async (entry) => {
-      const { Content } = await entry.render();
-      const htmlContent = await entry.render().then(r => r.Content);
-      return (
-        <TimelineItem
-          position={entry.data.position}
-          company={entry.data.company}
-          companyUrl={entry.data.companyUrl}
-          startDate={entry.data.startDate}
-          endDate={entry.data.endDate}
-          description={entry.body || ''}
-        />
-      );
-    })}
+    {workWithContent.map(({ entry, Content }) => (
+      <TimelineItem
+        position={entry.data.position}
+        company={entry.data.company}
+        companyUrl={entry.data.companyUrl}
+        startDate={entry.data.startDate}
+        endDate={entry.data.endDate}
+      >
+        <Content />
+      </TimelineItem>
+    ))}
   </div>
 </section>
 
