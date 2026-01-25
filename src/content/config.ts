@@ -24,7 +24,8 @@ const work = defineCollection({
     companyUrl: z.string().url(),
     startDate: z.date(),
     endDate: z.date().nullable(),
-    order: z.number().optional()
+    order: z.number().optional(),
+    expanded: z.boolean().default(false)
   })
 });
 

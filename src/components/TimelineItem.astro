@@ -1,13 +1,15 @@
 ---
 export interface Props {
+  id: string;
   position: string;
   company: string;
   companyUrl: string;
   startDate: Date;
   endDate: Date | null;
+  expanded?: boolean;
 }
 
-const { position, company, companyUrl, startDate, endDate } = Astro.props;
+const { id, position, company, companyUrl, startDate, endDate, expanded = false } = Astro.props;
 
 const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
@@ -16,13 +18,27 @@ const formatDate = (date: Date): string => {
 const dateRange = endDate
   ? `${formatDate(startDate)} - ${formatDate(endDate)}`
   : `${formatDate(startDate)} - Present`;
+
+const accordionId = `accordion-${id}`;
 ---
 
 <div class="timeline-item">
   <div class="timeline-marker"></div>
   <div class="timeline-content">
     <span class="dates">{dateRange}</span>
-    <h3 class="position">{position}</h3>
+    <div class="position-row">
+      <h3 class="position">{position}</h3>
+      <button
+        class="accordion-toggle"
+        data-accordion={accordionId}
+        aria-expanded={expanded ? "true" : "false"}
+        aria-controls={accordionId}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
     <a href={companyUrl} target="_blank" rel="noopener noreferrer" class="company">
       {company}
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -31,7 +47,7 @@ const dateRange = endDate
         <line x1="10" y1="14" x2="21" y2="3"></line>
       </svg>
     </a>
-    <div class="description">
+    <div id={accordionId} class:list={["description", { collapsed: !expanded }]}>
       <slot />
     </div>
   </div>
@@ -55,7 +71,7 @@ const dateRange = endDate
   }
 
   .timeline-item:last-child::before {
-    display: none;
+    bottom: 32px;
   }
 
   .timeline-marker {
@@ -74,24 +90,51 @@ const dateRange = endDate
 
   .dates {
     display: block;
-    font-size: 14px;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     margin-bottom: 4px;
   }
 
+  .position-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .position {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0 0 4px 0;
+    margin: 0;
+  }
+
+  .accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--text-secondary);
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .accordion-toggle:hover {
+    color: var(--text-primary);
+  }
+
+  .accordion-toggle[aria-expanded="true"] {
+    transform: rotate(180deg);
   }
 
   .company {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 16px;
+    font-size: 0.875rem;
     color: var(--text-secondary);
+    margin-top: 4px;
     margin-bottom: 12px;
   }
 
@@ -105,9 +148,18 @@ const dateRange = endDate
   }
 
   .description {
-    font-size: 15px;
+    font-size: 0.875rem;
     color: var(--text-secondary);
     line-height: 1.6;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 500px;
+    opacity: 1;
+  }
+
+  .description.collapsed {
+    max-height: 0;
+    opacity: 0;
   }
 
   .description :global(ul) {
@@ -118,4 +170,13 @@ const dateRange = endDate
   .description :global(li) {
     margin-bottom: 4px;
   }
+
+  .description :global(p) {
+    margin-bottom: 8px;
+  }
+
+  .description :global(p:last-child) {
+    margin-bottom: 0;
+  }
 </style>
+

@@ -21,11 +21,13 @@ const workWithContent = await Promise.all(
   <div class="timeline">
     {workWithContent.map(({ entry, Content }) => (
       <TimelineItem
+        id={entry.id}
         position={entry.data.position}
         company={entry.data.company}
         companyUrl={entry.data.companyUrl}
         startDate={entry.data.startDate}
         endDate={entry.data.endDate}
+        expanded={entry.data.expanded}
       >
         <Content />
       </TimelineItem>
@@ -51,3 +53,24 @@ const workWithContent = await Promise.all(
     position: relative;
   }
 </style>
+
+<script>
+  function initAccordions() {
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const accordionId = button.getAttribute('data-accordion');
+        const content = document.getElementById(accordionId);
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        button.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+        content?.classList.toggle('collapsed');
+      });
+    });
+  }
+
+  // Run on initial load
+  initAccordions();
+
+  // Re-run after Astro page transitions (if using View Transitions)
+  document.addEventListener('astro:after-swap', initAccordions);
+</script>
