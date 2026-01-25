@@ -13,7 +13,7 @@
 - [x] Setup content collections (work, education)
 - [x] Implement theme toggle system (dark/light)
 - [x] Responsive design (mobile-first)
-- [ ] Remove test content (blog posts, test data)
+- [x] Remove test content (blog posts, test data)
 - [x] Add accordion functionality to timeline descriptions
 - [x] Complete with real work/education data
 
