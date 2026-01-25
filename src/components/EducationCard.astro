@@ -1,0 +1,82 @@
+---
+export interface Props {
+  title: string;
+  institution: string;
+  institutionUrl: string;
+  startYear: number;
+  endYear: number | null;
+  description?: string;
+}
+
+const { title, institution, institutionUrl, startYear, endYear, description } = Astro.props;
+
+const yearRange = endYear
+  ? startYear === endYear ? `${startYear}` : `${startYear} - ${endYear}`
+  : `${startYear} - Present`;
+---
+
+<div class="education-card">
+  <span class="years">{yearRange}</span>
+  <h3 class="title">{title}</h3>
+  <a href={institutionUrl} target="_blank" rel="noopener noreferrer" class="institution">
+    {institution}
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>
+  </a>
+  {description && <p class="description">{description}</p>}
+</div>
+
+<style>
+  .education-card {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    transition: border-color 0.2s;
+  }
+
+  .education-card:hover {
+    border-color: var(--text-secondary);
+  }
+
+  .years {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+
+  .institution {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .institution:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+
+  .institution svg {
+    opacity: 0.7;
+  }
+
+  .description {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>

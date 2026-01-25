@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import EducationCard from './EducationCard.astro';
+
+const educationEntries = await getCollection('education');
+
+const sortedEducation = educationEntries.sort((a, b) => {
+  const aYear = a.data.endYear || a.data.startYear;
+  const bYear = b.data.endYear || b.data.startYear;
+  return bYear - aYear;
+});
+---
+
+<section class="education-section">
+  <h2>Education</h2>
+  <div class="education-grid">
+    {sortedEducation.map((entry) => (
+      <EducationCard
+        title={entry.data.title}
+        institution={entry.data.institution}
+        institutionUrl={entry.data.institutionUrl}
+        startYear={entry.data.startYear}
+        endYear={entry.data.endYear}
+        description={entry.body || undefined}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .education-section {
+    margin-bottom: 48px;
+  }
+
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .education-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .education-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
