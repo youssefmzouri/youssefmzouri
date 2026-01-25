@@ -34,8 +34,7 @@ const education = defineCollection({
     title: z.string(),
     institution: z.string(),
     institutionUrl: z.string().url(),
-    startYear: z.number(),
-    endYear: z.number().nullable(),
+    endYear: z.number(),
     order: z.number().optional()
   })
 });

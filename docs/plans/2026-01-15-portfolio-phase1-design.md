@@ -137,8 +137,7 @@ Brief description of the role and responsibilities.
 title: "AWS Solutions Architect"
 institution: "Amazon Web Services"
 institutionUrl: "https://aws.amazon.com"
-startYear: 2018
-endYear: 2022  # same year for single certifications
+endYear: 2022  # completion year (same year for single certifications)
 order: 1
 ---
 

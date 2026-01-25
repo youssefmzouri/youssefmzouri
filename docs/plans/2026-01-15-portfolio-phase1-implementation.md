@@ -138,8 +138,7 @@ const education = defineCollection({
     title: z.string(),
     institution: z.string(),
     institutionUrl: z.string().url(),
-    startYear: z.number(),
-    endYear: z.number().nullable(),
+    endYear: z.number(),
     order: z.number().optional()
   })
 });
@@ -765,20 +764,15 @@ export interface Props {
   title: string;
   institution: string;
   institutionUrl: string;
-  startYear: number;
-  endYear: number | null;
+  endYear: number;
   description?: string;
 }
 
-const { title, institution, institutionUrl, startYear, endYear, description } = Astro.props;
-
-const yearRange = endYear
-  ? startYear === endYear ? `${startYear}` : `${startYear} - ${endYear}`
-  : `${startYear} - Present`;
+const { title, institution, institutionUrl, endYear, description } = Astro.props;
 ---
 
 <div class="education-card">
-  <span class="years">{yearRange}</span>
+  <span class="years">{endYear}</span>
   <h3 class="title">{title}</h3>
   <a href={institutionUrl} target="_blank" rel="noopener noreferrer" class="institution">
     {institution}
@@ -856,9 +850,7 @@ import EducationCard from './EducationCard.astro';
 const educationEntries = await getCollection('education');
 
 const sortedEducation = educationEntries.sort((a, b) => {
-  const aYear = a.data.endYear || a.data.startYear;
-  const bYear = b.data.endYear || b.data.startYear;
-  return bYear - aYear;
+  return b.data.endYear - a.data.endYear;
 });
 ---
 
@@ -870,7 +862,6 @@ const sortedEducation = educationEntries.sort((a, b) => {
         title={entry.data.title}
         institution={entry.data.institution}
         institutionUrl={entry.data.institutionUrl}
-        startYear={entry.data.startYear}
         endYear={entry.data.endYear}
         description={entry.body || undefined}
       />
@@ -957,7 +948,6 @@ Create `src/content/education/example-degree.md`:
 title: "Bachelor's Degree in Computer Science"
 institution: "Example University"
 institutionUrl: "https://example.edu"
-startYear: 2018
 endYear: 2022
 order: 1
 ---
@@ -972,7 +962,6 @@ Create `src/content/education/example-certification.md`:
 title: "AWS Solutions Architect"
 institution: "Amazon Web Services"
 institutionUrl: "https://aws.amazon.com"
-startYear: 2023
 endYear: 2023
 order: 2
 ---
