@@ -141,7 +141,6 @@ vite.config.ts.timestamp-*
 # Astro
 .astro/*
 dist/*
-public/*
 
 # Worktrees
 .worktrees/
