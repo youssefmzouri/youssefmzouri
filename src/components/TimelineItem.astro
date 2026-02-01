@@ -1,4 +1,7 @@
 ---
+import OpenURL from '@components/svg/OpenURL.jsx';
+import DropDown from '@components/svg/DropDown.jsx';
+
 export interface Props {
   id: string;
   position: string;
@@ -34,18 +37,12 @@ const accordionId = `accordion-${id}`;
         aria-expanded={expanded ? "true" : "false"}
         aria-controls={accordionId}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <DropDown />
       </button>
     </div>
     <a href={companyUrl} target="_blank" rel="noopener noreferrer" class="company">
       {company}
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-        <polyline points="15 3 21 3 21 9"></polyline>
-        <line x1="10" y1="14" x2="21" y2="3"></line>
-      </svg>
+      <OpenURL />
     </a>
     <div id={accordionId} class:list={["description", { collapsed: !expanded }]}>
       <slot />
