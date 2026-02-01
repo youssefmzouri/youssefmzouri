@@ -1,4 +1,4 @@
-const SVGComponent = (props) => (
+const OpenURL = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={14}
@@ -16,4 +16,4 @@ const SVGComponent = (props) => (
     <line x1={10} y1={14} x2={21} y2={3} />
   </svg>
 );
-export default SVGComponent;
+export default OpenURL;
