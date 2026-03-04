@@ -1,6 +1,7 @@
 ---
 import OpenURL from '@components/svg/OpenURL.jsx';
 import DropDown from '@components/svg/DropDown.jsx';
+import { getDateDuration } from '@utils/utils';
 
 export interface Props {
   id: string;
@@ -18,9 +19,11 @@ const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
 
+const duration = getDateDuration(startDate, endDate);
 const dateRange = endDate
-  ? `${formatDate(startDate)} - ${formatDate(endDate)}`
-  : `${formatDate(startDate)} - Present`;
+  ? `${formatDate(startDate)} – ${formatDate(endDate)}`
+  : `${formatDate(startDate)} – Present`;
+const dateLabel = duration ? `${dateRange} · ${duration}` : dateRange;
 
 const accordionId = `accordion-${id}`;
 ---
@@ -28,7 +31,7 @@ const accordionId = `accordion-${id}`;
 <div class="timeline-item">
   <div class="timeline-marker"></div>
   <div class="timeline-content">
-    <span class="dates">{dateRange}</span>
+    <span class="dates">{dateLabel}</span>
     <div class="position-row">
       <h3 class="position">{position}</h3>
       <button
