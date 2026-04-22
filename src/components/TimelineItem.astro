@@ -19,11 +19,10 @@ const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
 
-const duration = getDateDuration(startDate, endDate);
+const duration = endDate ? getDateDuration(startDate, endDate) : null;
 const dateRange = endDate
   ? `${formatDate(startDate)} – ${formatDate(endDate)}`
   : `${formatDate(startDate)} – Present`;
-const dateLabel = duration ? `${dateRange} · ${duration}` : dateRange;
 
 const accordionId = `accordion-${id}`;
 ---
@@ -31,7 +30,9 @@ const accordionId = `accordion-${id}`;
 <div class="timeline-item">
   <div class="timeline-marker"></div>
   <div class="timeline-content">
-    <span class="dates">{dateLabel}</span>
+    <span class="dates">
+      {dateRange}{duration && ` · ${duration}`}{!endDate && <span data-duration-live={startDate.toISOString()}></span>}
+    </span>
     <div class="position-row">
       <h3 class="position">{position}</h3>
       <button
@@ -179,4 +180,29 @@ const accordionId = `accordion-${id}`;
     margin-bottom: 0;
   }
 </style>
+
+<script>
+  function calcDuration(startDate: Date): string {
+    const now = new Date();
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    if (months < 0) { years -= 1; months += 12; }
+    const yearStr = years === 1 ? "1 yr" : years > 1 ? `${years} yrs` : "";
+    const monthStr = months === 1 ? "1 mo" : months > 1 ? `${months} mos` : "";
+    if (yearStr && monthStr) return ` · ${yearStr} ${monthStr}`;
+    if (yearStr) return ` · ${yearStr}`;
+    if (monthStr) return ` · ${monthStr}`;
+    return "";
+  }
+
+  function updateLiveDurations() {
+    document.querySelectorAll<HTMLElement>("[data-duration-live]").forEach((el) => {
+      const startDate = new Date(el.dataset.durationLive!);
+      el.textContent = calcDuration(startDate);
+    });
+  }
+
+  updateLiveDurations();
+  document.addEventListener("astro:after-swap", updateLiveDurations);
+</script>
 
