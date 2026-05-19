@@ -3,7 +3,7 @@ position: "Backend Engineer"
 company: "Flanks"
 companyUrl: "https://flanks.io"
 startDate: 2024-02-01
-endDate: null
+endDate: 2026-05-19
 order: 1
 expanded: true
 ---
