@@ -5,7 +5,7 @@ companyUrl: "https://flanks.io"
 startDate: 2024-02-01
 endDate: 2026-05-19
 order: 1
-expanded: true
+expanded: false
 ---
 
 - Designed and developed the backend architecture for a new multi-portal product, supporting multiple client-facing web applications from a shared core platform.

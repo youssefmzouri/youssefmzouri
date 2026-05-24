@@ -5,7 +5,7 @@ companyUrl: "https://wideeyes.ai"
 startDate: 2021-07-01
 endDate: 2024-01-31
 order: 2
-expanded: true
+expanded: false
 ---
 
 - Worked on the core data ingestion and processing pipeline, handling large volumes of client-imported product data with a focus on consistency, performance, and scalability.

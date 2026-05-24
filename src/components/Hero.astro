@@ -1,0 +1,104 @@
+---
+import { getCollection, render } from 'astro:content';
+
+const [workEntries, profileEntries] = await Promise.all([
+  getCollection('work'),
+  getCollection('profile'),
+]);
+
+const heroEntry = profileEntries.find((entry) => entry.id === 'hero');
+const HeroContent = heroEntry ? (await render(heroEntry)).Content : null;
+
+function getOldestStartDate(entries: typeof workEntries): Date | null {
+  if (entries.length === 0) return null;
+
+  return entries.reduce((oldest, entry) => {
+    return entry.data.startDate < oldest ? entry.data.startDate : oldest;
+  }, entries[0].data.startDate);
+}
+
+function getFullYearsSince(startDate: Date, endDate = new Date()): number {
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  const hasNotReachedAnniversary =
+    endDate.getMonth() < startDate.getMonth() ||
+    (endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+
+  if (hasNotReachedAnniversary) {
+    years -= 1;
+  }
+
+  return Math.max(years, 0);
+}
+
+const oldestStartDate = getOldestStartDate(workEntries);
+const yearsOfExperience = oldestStartDate ? getFullYearsSince(oldestStartDate) : 0;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    {HeroContent ? <HeroContent /> : <p>Lorem ipsum ...</p>}
+  </div>
+  <div class="hero-subtitle" aria-label={`Software engineer, based in Barcelona, over ${yearsOfExperience} years of experience`}>
+    <span>Software Engineer</span>
+    <span class="subtitle-separator" aria-hidden="true">·</span>
+    <span class="subtitle-item">Barcelona</span>
+    <span class="subtitle-separator" aria-hidden="true">·</span>
+    <span class="subtitle-item">+{yearsOfExperience} yrs of experience</span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .hero-greeting {
+    color: var(--text-secondary);
+  }
+
+  .hero-name {
+    color: var(--text-primary);
+  }
+
+  .hero-subtitle {
+    align-items: center;
+    color: var(--text-primary);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 8px;
+    line-height: 1.5;
+    margin-top: 20px;
+  }
+
+  .subtitle-separator,
+  .location-icon {
+    color: var(--text-secondary);
+  }
+
+  .location-icon {
+    flex: 0 0 auto;
+  }
+
+  .hero-copy {
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    max-width: 680px;
+  }
+
+  .hero-copy :global(p) {
+    margin-bottom: 12px;
+  }
+
+  .hero-copy :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      margin-bottom: 38px;
+    }
+  }
+</style>

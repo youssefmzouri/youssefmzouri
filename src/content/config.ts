@@ -40,4 +40,11 @@ const education = defineCollection({
   })
 });
 
-export const collections = { blog, work, education };
+const profile = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: "./src/content/profile" }),
+  schema: z.object({
+    title: z.string()
+  })
+});
+
+export const collections = { blog, work, education, profile };
