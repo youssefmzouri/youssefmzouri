@@ -32,18 +32,29 @@ function getFullYearsSince(startDate: Date, endDate = new Date()): number {
 
 const oldestStartDate = getOldestStartDate(workEntries);
 const yearsOfExperience = oldestStartDate ? getFullYearsSince(oldestStartDate) : 0;
+const experienceStartDateValue = oldestStartDate
+  ? [
+      oldestStartDate.getUTCFullYear(),
+      String(oldestStartDate.getUTCMonth() + 1).padStart(2, '0'),
+      String(oldestStartDate.getUTCDate()).padStart(2, '0'),
+    ].join('-')
+  : undefined;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-copy">
     {HeroContent ? <HeroContent /> : <p>Lorem ipsum ...</p>}
   </div>
-  <div class="hero-subtitle" aria-label={`Software engineer, based in Barcelona, over ${yearsOfExperience} years of experience`}>
+  <div
+    class="hero-subtitle"
+    aria-label={`Software engineer, based in Barcelona, over ${yearsOfExperience} years of experience`}
+    data-experience-start-date={experienceStartDateValue}
+  >
     <span>Software Engineer</span>
     <span class="subtitle-separator" aria-hidden="true">·</span>
     <span class="subtitle-item">Barcelona</span>
     <span class="subtitle-separator" aria-hidden="true">·</span>
-    <span class="subtitle-item">+{yearsOfExperience} yrs of experience</span>
+    <span class="subtitle-item" data-experience-years>+{yearsOfExperience} yrs of experience</span>
   </div>
 </section>
 
@@ -102,3 +113,53 @@ const yearsOfExperience = oldestStartDate ? getFullYearsSince(oldestStartDate) :
     }
   }
 </style>
+
+<script>
+  function getFullYearsSince(startDate: Date, endDate = new Date()): number {
+    let years = endDate.getFullYear() - startDate.getFullYear();
+    const hasNotReachedAnniversary =
+      endDate.getMonth() < startDate.getMonth() ||
+      (endDate.getMonth() === startDate.getMonth() && endDate.getDate() < startDate.getDate());
+
+    if (hasNotReachedAnniversary) {
+      years -= 1;
+    }
+
+    return Math.max(years, 0);
+  }
+
+  function parseDateValue(value: string): Date | null {
+    const parts = value.split("-").map(Number);
+    if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+
+    const [year, month, day] = parts;
+    const date = new Date(year, month - 1, day);
+    const isValidDate =
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day;
+
+    return isValidDate ? date : null;
+  }
+
+  function updateHeroExperience() {
+    const subtitle = document.querySelector<HTMLElement>("[data-experience-start-date]");
+    const yearsElement = subtitle?.querySelector<HTMLElement>("[data-experience-years]");
+    const startDateValue = subtitle?.dataset.experienceStartDate;
+
+    if (!subtitle || !yearsElement || !startDateValue) return;
+
+    const startDate = parseDateValue(startDateValue);
+    if (!startDate) return;
+
+    const yearsOfExperience = getFullYearsSince(startDate);
+    yearsElement.textContent = `+${yearsOfExperience} yrs of experience`;
+    subtitle.setAttribute(
+      "aria-label",
+      `Software engineer, based in Barcelona, over ${yearsOfExperience} years of experience`,
+    );
+  }
+
+  updateHeroExperience();
+  document.addEventListener("astro:after-swap", updateHeroExperience);
+</script>
