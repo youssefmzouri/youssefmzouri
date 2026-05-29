@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-import { AGENT_SKILL_MARKDOWN, SITE_ORIGIN, jsonResponse, sha256Digest } from '../../../lib/agentDiscovery';
+import { AGENT_SKILL_MARKDOWN, SITE_ORIGIN, jsonResponse, sha256Digest } from '../../../agentDiscovery';
 
 export const GET: APIRoute = async () => {
   return jsonResponse({
