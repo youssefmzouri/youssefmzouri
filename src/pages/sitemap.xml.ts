@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-import { SITE_ORIGIN } from '../lib/agentDiscovery';
+import { SITE_ORIGIN } from '../agentDiscovery';
 
 const pageModules = import.meta.glob('./**/*.astro');
 

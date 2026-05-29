@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
-import { SITE_ORIGIN } from '../../lib/agentDiscovery';
-import { jsonResponse } from '../../lib/agentDiscovery';
+import { SITE_ORIGIN } from '../../agentDiscovery';
+import { jsonResponse } from '../../agentDiscovery';
 
 export const GET: APIRoute = () => {
   return jsonResponse({

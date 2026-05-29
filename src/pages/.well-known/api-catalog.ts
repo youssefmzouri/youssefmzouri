@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-import { API_ANCHOR, SITE_ORIGIN } from '../../lib/agentDiscovery';
+import { API_ANCHOR, SITE_ORIGIN } from '../../agentDiscovery';
 
 export const GET: APIRoute = () => {
   return new Response(
