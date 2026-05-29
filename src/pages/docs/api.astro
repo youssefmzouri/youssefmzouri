@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="Site API">
+  <section class="api-docs">
+    <h1>Site API</h1>
+    <p>
+      Public discovery API for agents and automated clients. The API catalog is available at
+      <a href="/.well-known/api-catalog">/.well-known/api-catalog</a>, the OpenAPI document is available at
+      <a href="/.well-known/openapi.json">/.well-known/openapi.json</a>, and health information is available at
+      <a href="/api/status">/api/status</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .api-docs {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+</style>
